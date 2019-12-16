@@ -1,0 +1,11 @@
+/Users/honeybook/SDG/Projects/Week 07/jurassicpark/bin/Debug/netcoreapp3.1/jurassicpark
+/Users/honeybook/SDG/Projects/Week 07/jurassicpark/bin/Debug/netcoreapp3.1/jurassicpark.deps.json
+/Users/honeybook/SDG/Projects/Week 07/jurassicpark/bin/Debug/netcoreapp3.1/jurassicpark.runtimeconfig.json
+/Users/honeybook/SDG/Projects/Week 07/jurassicpark/bin/Debug/netcoreapp3.1/jurassicpark.runtimeconfig.dev.json
+/Users/honeybook/SDG/Projects/Week 07/jurassicpark/bin/Debug/netcoreapp3.1/jurassicpark.dll
+/Users/honeybook/SDG/Projects/Week 07/jurassicpark/bin/Debug/netcoreapp3.1/jurassicpark.pdb
+/Users/honeybook/SDG/Projects/Week 07/jurassicpark/obj/Debug/netcoreapp3.1/jurassicpark.csprojAssemblyReference.cache
+/Users/honeybook/SDG/Projects/Week 07/jurassicpark/obj/Debug/netcoreapp3.1/jurassicpark.AssemblyInfoInputs.cache
+/Users/honeybook/SDG/Projects/Week 07/jurassicpark/obj/Debug/netcoreapp3.1/jurassicpark.AssemblyInfo.cs
+/Users/honeybook/SDG/Projects/Week 07/jurassicpark/obj/Debug/netcoreapp3.1/jurassicpark.dll
+/Users/honeybook/SDG/Projects/Week 07/jurassicpark/obj/Debug/netcoreapp3.1/jurassicpark.pdb

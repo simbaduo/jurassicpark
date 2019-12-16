@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "/Users/honeybook/.dotnet/store/|arch|/|tfm|",
+      "/Users/honeybook/.nuget/packages"
+    ]
+  }
+}
