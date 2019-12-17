@@ -6,7 +6,6 @@ namespace jurassicpark
 {
   class Program
   {
-
     static DinoContext Db = new DinoContext();
 
 
@@ -55,6 +54,25 @@ namespace jurassicpark
 
     // });
     //   }
+
+    static void dinoInventory() //why do I have to make this a 2 step function in the menu selection?
+    {
+      displayDinosaur(Db.Dinosaurs);
+    }
+
+    static void displayDinosaur(IEnumerable<Dinosaur> dinoList) //explanation
+    {
+      foreach (var Dino in dinoList)
+      {
+        Console.WriteLine($"\n\nDino Name: {Dino.Name}\n");
+        Console.WriteLine($"Dino Type: {Dino.Type}\n");
+        Console.WriteLine($"Diet Diet: {Dino.Diet}\n");
+        Console.WriteLine($"Dino Weight: {Dino.Weight} lbs\n");
+        Console.WriteLine($"Enclosure No.: {Dino.EnclosureNo}\n");
+        Console.WriteLine($"Date Entered Park: {Dino.DateAdded}\n\n");
+      }
+    }
+
     static void addDinosaur()
     {
       Console.WriteLine("\nAdd Dino\n");
@@ -80,56 +98,17 @@ namespace jurassicpark
       Db.SaveChanges();
     }
 
-    static void displayDinosaur(IEnumerable<Dinosaur> dinoList) //explanation
-    {
-      foreach (var Dino in dinoList)
-      {
-        Console.WriteLine($"\n\nDino Name: {Dino.Name}\n");
-        Console.WriteLine($"Dino Type: {Dino.Type}\n");
-        Console.WriteLine($"Diet Diet: {Dino.Diet}\n");
-        Console.WriteLine($"Dino Weight: {Dino.Weight} lbs\n");
-        Console.WriteLine($"Enclosure No.: {Dino.EnclosureNo}\n");
-        Console.WriteLine($"Date Entered Park: {Dino.DateAdded}\n\n");
-      }
-    }
-
-    static void hatchDino()
-    {
-      string[] hatchNames = { "Andor", "Gildas", "Halvor",
-                "Jarvis", "Kosoko", "Magnus", "Ragnar", "Sadiki"};
-      string[] hatchDiet = { "carnivore", "herbivore" };
-
-      var hatchDino = new Dinosaur();
-      Random rand = new Random();
-
-      hatchDino.Name = hatchNames[rand.Next(0, 11)];
-      hatchDino.Diet = hatchDiet[rand.Next(0, 2)];
-      hatchDino.DateAdded = DateTime.Now;
-      hatchDino.Weight = rand.Next(50, 25000);
-      hatchDino.EnclosureNo = rand.Next(0, 8);
-      Console.WriteLine($"{hatchDino.Name} has hatched!!\n\nA stunning {hatchDino.Diet} that weighs {hatchDino.Weight} lbs\n\nLet's place this beautiful creature in Enclosure No. {hatchDino.EnclosureNo}");
-      Db.Dinosaurs.Add(hatchDino);
-      Db.SaveChanges();
-
-
-
-
-
-
-
-    }
-
-    static void dinoInventory() //why do I have to make this a 2 step function in the menu selection?
-    {
-      displayDinosaur(Db.Dinosaurs);
-    }
-
     static void deleteDinosaur()
     {
       Console.WriteLine("\nPlease enter the name of the dino you wish to remove:\n");
       var deleteDinoName = Console.ReadLine();
-      var removeDino = Db.Dinosaurs.FirstOrDefault(dino => dino.Name == deleteDinoName);
-      Db.SaveChanges();
+      var removeDino = Db.Dinosaurs.FirstOrDefault(temp => temp.Name.ToUpper() == deleteDinoName.ToUpper());
+
+      if (removeDino != null) //why is this IF statement needed?
+      {
+        Db.Dinosaurs.Remove(removeDino);
+        Db.SaveChanges();
+      }
       // dinoList.RemoveAll(temp => temp.Name == eraseDino);
     }
 
@@ -155,8 +134,6 @@ namespace jurassicpark
       // var dietCount = dinoList.Count(temp => temp.Diet.ToUpper() == dietaryDinoDiet.ToUpper());
       var dinoDiets = Db.Dinosaurs.Count(temp => temp.Diet == dietaryDinoDiet);
       Console.WriteLine($"\nThere are {dinoDiets} {dietaryDinoDiet}s\n\n");
-
-
     }
 
     static void weightsOfDinosaur()
@@ -166,11 +143,49 @@ namespace jurassicpark
 
     }
 
+    static void hatchDino()
+    {
+      string[] hatchNames = { "Andor", "Gildas", "Halvor",
+                "Jarvis", "Kosoko", "Magnus", "Ragnar", "Sadiki"};
+      string[] hatchDiet = { "Carnivore", "Herbivore" };
+      string[] hatchType = {"Apatosaurus", "Spinosaurus", "Allosaurus",
+      "Triceratops", "Oviraptor", "Iguanodon", "Plateosaurus",};
+      var hatchDino = new Dinosaur();
+      Random rand = new Random();
+
+      hatchDino.Name = hatchNames[rand.Next(hatchNames.Length)];
+      hatchDino.Diet = hatchDiet[rand.Next(0, 2)];
+      hatchDino.Type = hatchType[rand.Next(hatchType.Length)];
+      hatchDino.DateAdded = DateTime.Now;
+      hatchDino.Weight = rand.Next(50, 25000);
+      hatchDino.EnclosureNo = rand.Next(0, 8);
+      Console.WriteLine($"\n{hatchDino.Name}has hatched!!\n\nA stunning {hatchDino.Type}, eating a {hatchDino.Diet} diet that weighs {hatchDino.Weight} lbs\n\nLet's place this beautiful creature in Enclosure No. {hatchDino.EnclosureNo}");
+      Db.Dinosaurs.Add(hatchDino);
+      Db.SaveChanges();
+    }
+
+    static void releaseDino()
+    {
+      Console.WriteLine("Please enter which enclosure you want to release dinos from: ");
+      var releaseNo = Console.ReadLine();
+      var cageRelease = Db.Dinosaurs.FirstOrDefault(temp => temp.EnclosureNo == int.Parse(releaseNo));
+      cageRelease.EnclosureNo = default;
+      Db.SaveChanges();
+
+    }
+
+    static void sheepNecessity()
+    {
+      Console.WriteLine("\nThis Carnivore is a little underweight. Feed Me Sheep!\n");
+      displayDinosaur(Db.Dinosaurs.OrderBy(temp => temp.Diet).ThenBy(temp => temp.Weight).Take(1));
+    }
+
     static void exitProgram()
     {
       Console.WriteLine("\nExiting Program\n"); //stop menu from reloading?
       Environment.Exit(0); //explanation
     }
+
     static void invalidInput()
     {
       Console.WriteLine("\nInvalid Entry. Try Again\n");
@@ -189,7 +204,7 @@ namespace jurassicpark
       {
 
         Console.WriteLine("\nPlease Choose Your Survival Path\n\n\nSelect from the list below.");
-        Console.WriteLine("\nV: View List\n\nA: Add Dino\n\nD: Delete Dino\n\nT: Transfer Location\n\nN: Nutrition\n\nW: Dino Weights\n\nH: Hatch a Dino\n\nE: Exit at anytime\n\n");
+        Console.WriteLine("\nV: View List\n\nA: Add Dino\n\nD: Delete Dino\n\nT: Transfer Location\n\nN: Nutrition\n\nW: Dino Weights\n\nH: Hatch a Dino\n\nR: Release Dino\n\nS: Needs a Sheep\n\nE: Exit at anytime\n\n");
 
         userInput = Console.ReadLine().ToUpper();
 
@@ -221,6 +236,14 @@ namespace jurassicpark
         else if (userInput == "H") //how do i also allow exit and Exit and EXIT
         {
           hatchDino();
+        }
+        else if (userInput == "R")
+        {
+          releaseDino();
+        }
+        else if (userInput == "S")
+        {
+          sheepNecessity();
         }
         else if (userInput == "E") //how do i also allow exit and Exit and EXIT
         {
